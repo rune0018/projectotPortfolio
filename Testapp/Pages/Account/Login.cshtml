@@ -1,0 +1,19 @@
+﻿@page
+@model Testapp.Pages.Account.LoginModel
+@{
+}
+
+<form method="post">
+    <input type="hidden" asp-for="ReturnUrl" />
+
+
+    Username: <input asp-for="Username" />
+    Password: <input asp-for="Password" />
+    RememberLogin <input asp-for="RememberLogin" />
+    <input type="submit" asp-page-handler="Login" />
+
+</form>
+
+<form method="post">
+    <button asp-page-handler="Logout">Logout</button>
+</form>

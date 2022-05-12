@@ -1,0 +1,46 @@
+﻿@page 
+@model Testapp.Pages.Projecter
+@{
+    ViewData["Title"] = "Projector Page";
+    if (Model.Projects.Count() < 1)
+    {
+        new Testapp.Models.Project("Erpsystem", "I dette project fik jeg lært hvordan man sætter et csharp project op mend en sql database", "https://github.com/rune0018/erpsystem");
+        new Testapp.Models.Project("Quicksort", "i dette project lærtejeg at bruge recursive metoder til at løse et problem", "https://github.com/rune0018/h1-forlorb");
+    }
+    string CshtmlPath = Path.Substring(Path.IndexOf("Pages/") + 5);
+    ViewData["Path"] = CshtmlPath.Substring(0,CshtmlPath.IndexOf(".")); //valid href
+}
+<h1>Projector jeg har arbejdet med:</h1>
+
+<ul>
+    @foreach (var project in Model.Projects)
+    {
+    <li class="">
+        @project.Title
+        <p class="">@project.Description </p>
+        <a href=@project.GithubLink>Link</a>
+        <a href="Projector/details/@project.ID">Details</a>
+        @if (User.Identity.Name == "admin" && User.Identity.IsAuthenticated)
+        {
+            <form method="post">
+                <button type="submit" asp-route-id="@project.ID" asp-page-handler="delete">Delete</button>
+            </form>
+        }
+
+    </li>
+    }
+    
+<div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h1>Tilføj nyt project</h1>
+        <form method="post">
+            Project navn:<input asp-for="Title" />
+            Project beskrivelse:<input asp-for="Description" />
+            Project link:<input asp-for="GithubLink" />
+            <input type="submit" asp-page-handler="Create" />
+        </form>
+    }
+
+</div>
+</ul>

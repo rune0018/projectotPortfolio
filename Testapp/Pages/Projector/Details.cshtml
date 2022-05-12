@@ -1,0 +1,9 @@
+﻿@page "{id:int:min(0)}"
+@model Testapp.Pages.DetailsModel
+@{
+    var project = Model.Project;
+    ViewData["Title"] = project.Title;
+    <h1>@project.Title</h1>
+    <h2>@project.Description</h2>
+    <p>project Link <a href="@project.GithubLink">Link</a></p>
+ }
