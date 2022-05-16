@@ -16,8 +16,8 @@ namespace ProjectorAPI.Controllers
     public class ProjectorController : ControllerBase
     {
         private static List<Project> data = new();
+        //Magic Linking with ../data/ProjectorContext.cs 2
         private readonly ProjectorContext _context;
-
         public ProjectorController(ProjectorContext context)
         {
             _context = context;
