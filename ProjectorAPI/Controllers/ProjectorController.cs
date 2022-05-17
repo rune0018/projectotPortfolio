@@ -44,24 +44,25 @@ namespace ProjectorAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database faliure {e.Message}");
             }
-            return BadRequest();
+             return BadRequest();
 
         }
         [Authorize]
         [HttpPost]
-        public IActionResult Post(Project project)
+        public IActionResult Post(AutherizedProject aproject)
         {
+            if(UsersController.Exists(aproject.username,aproject.role))
             try
             {
-                _context.projects.Add(project);
+                _context.projects.Add(aproject.project);
                 _context.SaveChanges();
-                return Created($"/api/projector/{project.ID}", project);
+                return Created($"/api/projector/{aproject.project.ID}", aproject.project);
             }
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database faliure {e.Message}");
             }
-            return BadRequest();
+            return BadRequest("no user found");
         }
         [Route("{id:int:min(0)}")]
         [HttpGet]

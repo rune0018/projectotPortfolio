@@ -10,7 +10,7 @@ namespace ProjectorAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private List<User> Users = new List<User>() {
+        private static List<User> Users = new List<User>() {
             new User(){ Username = "admin",Password = "localAdmin",Role = "admin"},
             new User(){ Username = "rune001",Password = "lol",Role = "security"}
         };
@@ -18,6 +18,15 @@ namespace ProjectorAPI.Controllers
         public IActionResult Get([FromQuery]LoginModel login)
         {
             return Ok(Users.Where(user => user.Username == login.Username && user.Password == login.Password));
+        }
+
+        public static bool Exists(string username, string role)
+        {
+            if(Users.Where(u=> u.Username == username && u.Password == role).Count() >=1)
+            {
+                return true;
+            }
+            return false;
         }
 
     }

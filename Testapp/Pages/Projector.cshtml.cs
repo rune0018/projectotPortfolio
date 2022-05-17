@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using Testapp.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Testapp.Pages
 {
@@ -74,7 +75,14 @@ namespace Testapp.Pages
             }
             if (Title != null)
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync<Project>("https://localhost:44305/api/Projector", new Project(Title, Description, GithubLink));
+                Project p = new Project(Title, Description, GithubLink);
+                AutherizedProject autherizedProject = new AutherizedProject
+                {
+                    project = p,
+                    username = User.Identity.Name,
+                    role = User.FindFirstValue(ClaimTypes.Role)
+                };
+                HttpResponseMessage response = await client.PostAsJsonAsync("https://localhost:44305/api/Projector", autherizedProject);
                 response.EnsureSuccessStatusCode();
                 Console.WriteLine(response.Headers.Location.ToString());
             }
