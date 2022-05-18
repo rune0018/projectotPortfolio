@@ -80,7 +80,7 @@ namespace Testapp.Pages
                 {
                     project = p,
                     username = User.Identity.Name,
-                    role = User.FindFirstValue(ClaimTypes.Role)
+                    id = User.FindFirstValue(ClaimTypes.NameIdentifier)
                 };
                 HttpResponseMessage response = await client.PostAsJsonAsync("https://localhost:44305/api/Projector", autherizedProject);
                 response.EnsureSuccessStatusCode();

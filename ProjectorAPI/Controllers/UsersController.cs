@@ -20,9 +20,9 @@ namespace ProjectorAPI.Controllers
             return Ok(Users.Where(user => user.Username == login.Username && user.Password == login.Password));
         }
 
-        public static bool Exists(string username, string role)
+        public static bool Exists(string username, string id)
         {
-            if(Users.Where(u=> u.Username == username && u.Password == role).Count() >=1)
+            if(Users.Where(u=> u.Username == username && u.Id.ToString() == id).Count() >=1)
             {
                 return true;
             }

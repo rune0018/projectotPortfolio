@@ -13,15 +13,9 @@ namespace Testapp.Models
             new User(){ Username = "admin",Password = "localAdmin",Role = "admin"},
             new User(){ Username = "rune001",Password = "lol",Role = "security"}
         };
-//        713423 admin
-//        51319244 rune001
         public User GetUser(string username,string password)
         {
-
-            HttpClient client = new HttpClient();
-            var user = new Models.User();
-            user = GetUserAPI(username, password).Result;
-            return user;
+            return GetUserAPI(username, password).Result;
         }
         /// <summary>
         /// Api Call to get user

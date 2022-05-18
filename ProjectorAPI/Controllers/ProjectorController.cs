@@ -51,7 +51,7 @@ namespace ProjectorAPI.Controllers
         [HttpPost]
         public IActionResult Post(AutherizedProject aproject)
         {
-            if(UsersController.Exists(aproject.username,aproject.role))
+            if(UsersController.Exists(aproject.username,aproject.id))
             try
             {
                 _context.projects.Add(aproject.project);
