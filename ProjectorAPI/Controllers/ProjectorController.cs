@@ -77,8 +77,10 @@ namespace ProjectorAPI.Controllers
         [Authorize]
         [Route("{id:int:min(0)}")]
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id,string username,string guid)
         {
+            if (!UsersController.Exists(username, guid)) 
+                return Unauthorized();
             Project toRemove = _context.projects.Where(x => x.ID == id).First();
             _context.projects.Remove(toRemove);
             _context.SaveChanges();

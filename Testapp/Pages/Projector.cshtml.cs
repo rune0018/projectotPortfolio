@@ -59,7 +59,7 @@ namespace Testapp.Pages
                 return Unauthorized();
             }
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.DeleteAsync($"https://localhost:44305/api/Projector/{id}");
+            HttpResponseMessage response = await client.DeleteAsync($"https://localhost:44305/api/Projector/{id}?username={User.Identity.Name}?guid={User.FindFirstValue(ClaimTypes.NameIdentifier)}");
             return Page();
         }
         public async Task<IActionResult> OnPostCreateAsync()
