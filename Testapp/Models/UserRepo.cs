@@ -35,8 +35,10 @@ namespace Testapp.Models
                     user = await response.Content.ReadFromJsonAsync<User[]>();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
                 user[0] = Repo.SingleOrDefault(u => u.Username == username && u.Password == password);
             }
             return user[0];

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectorAPI.models;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace ProjectorAPI.Controllers
 {
@@ -10,19 +11,25 @@ namespace ProjectorAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private static List<User> Users = new List<User>() {
+        private static List<User> MyUsers = new List<User>() {
             new User(){ Username = "admin",Password = "localAdmin",Role = "admin"},
             new User(){ Username = "rune001",Password = "lol",Role = "security"}
         };
         [HttpGet]
         public IActionResult Get([FromQuery]LoginModel login)
         {
-            return Ok(Users.Where(user => user.Username == login.Username && user.Password == login.Password));
+            var users = MyUsers.Where(user => user.Username == login.Username && user.Password == login.Password);
+            int whatToUpdate = MyUsers.IndexOf(users.First());
+            MyUsers[whatToUpdate].Logindate=DateTime.Now;
+            return Ok(MyUsers.Where(user => user.Username == login.Username && user.Password == login.Password));
         }
 
         public static bool Exists(string username, string id)
         {
-            if(Users.Where(u=> u.Username == username && u.Id.ToString() == id).Count() >=1)
+            if(MyUsers.Where(u=> u.Username == username &&
+            u.Id.ToString() == id &&
+            DateTime.Compare(DateTime.Now, u.Logindate.AddHours(1)) <=0)
+                .Count() >=1)
             {
                 return true;
             }
