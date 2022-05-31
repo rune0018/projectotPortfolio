@@ -11,7 +11,7 @@ namespace ProjectorAPI.Data
         {
             context.Database.EnsureCreated();
 
-            if (context.projects.Any())
+            if (context.projects.Any()&&context.users.Any())
             {
                 return;
             }

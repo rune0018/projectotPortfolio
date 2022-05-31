@@ -2,7 +2,7 @@
 
 namespace ProjectorAPI.Migrations
 {
-    public partial class migration1 : Migration
+    public partial class test2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

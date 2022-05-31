@@ -4,6 +4,7 @@ using ProjectorAPI.models;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using ProjectorAPI.Data;
 
 namespace ProjectorAPI.Controllers
 {
@@ -15,6 +16,12 @@ namespace ProjectorAPI.Controllers
             new User(){ Username = "admin",Password = "localAdmin",Role = "admin"},
             new User(){ Username = "rune001",Password = "lol",Role = "security"}
         };
+
+        private readonly ProjectorContext _context;
+        public UsersController(ProjectorContext context)
+        {
+            _context = context;
+        }
         [HttpGet]
         public IActionResult Get([FromQuery]LoginModel login)
         {

@@ -16,6 +16,7 @@ namespace ProjectorAPI.Data
         }
 
         public DbSet<Project> projects { get; set; }
+        public DbSet<User> users { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder options)
         //{
@@ -26,6 +27,7 @@ namespace ProjectorAPI.Data
         {
             
             modelBuilder.Entity<Project>().ToTable("Project");
+            modelBuilder.Entity<User>().ToTable("Users");
         }
     }
 }
