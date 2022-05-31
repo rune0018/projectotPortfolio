@@ -15,6 +15,7 @@ namespace ProjectorAPI.Data
             {
                 return;
             }
+            context.users.Add(new models.User { Username = "admin", Password = "localAdmin" });
             //seed data if needed
         }
     }

@@ -8,7 +8,7 @@ using ProjectorAPI.Data;
 
 namespace ProjectorAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -23,24 +23,50 @@ namespace ProjectorAPI.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult Get([FromQuery]LoginModel login)
+        public IActionResult Get([FromQuery] LoginModel login)
         {
-            var users = MyUsers.Where(user => user.Username == login.Username && user.Password == login.Password);
-            int whatToUpdate = MyUsers.IndexOf(users.First());
-            MyUsers[whatToUpdate].Logindate=DateTime.Now;
-            return Ok(MyUsers.Where(user => user.Username == login.Username && user.Password == login.Password));
+            if (!_context.users.Any())
+            {
+                _context.users.Add(new models.User { Username = "admin", Password = "localAdmin", Role = "admin" });
+                _context.SaveChanges();
+            }
+            try
+            {
+                var user = _context.users.Single(user => user.Username == login.Username && user.Password == login.Password);
+                user.Logindate = DateTime.Now;
+                _context.users.Update(user);
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+            return Ok(_context.users.Where(user => user.Username == login.Username && user.Password == login.Password));
         }
-
-        public static bool Exists(string username, string id)
+        [NonAction]
+        public bool Exists(string username, string id)
         {
-            if(MyUsers.Where(u=> u.Username == username &&
+            if (_context.users.Where(u => u.Username == username &&
             u.Id.ToString() == id &&
-            DateTime.Compare(DateTime.Now, u.Logindate.AddHours(1)) <=0)
-                .Count() >=1)
+            DateTime.Compare(DateTime.Now, u.Logindate.AddHours(1)) <= 0)
+                .Count() >= 1)
             {
                 return true;
             }
             return false;
+        }
+        
+        [HttpPost]
+        public IActionResult Post(RegisterForm registerForm)
+        {
+            if(Exists("admin", registerForm.id))
+            {
+                User toAdd = new models.User { Username = registerForm.username, Password = registerForm.password };
+                _context.users.Add(toAdd);
+                _context.SaveChanges();
+                return Created($"/api/Users/{toAdd.Id}",toAdd);
+            }
+            return Unauthorized();
         }
 
     }

@@ -44,14 +44,13 @@ namespace ProjectorAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database faliure {e.Message}");
             }
-             return BadRequest();
 
         }
         [Authorize]
         [HttpPost]
         public IActionResult Post(AutherizedProject aproject)
         {
-            if(UsersController.Exists(aproject.username,aproject.id))
+            if(Exists(aproject.username,aproject.id))
             try
             {
                 _context.projects.Add(aproject.project);
@@ -79,12 +78,24 @@ namespace ProjectorAPI.Controllers
         [HttpDelete]
         public IActionResult Delete(int id,string username,string guid)
         {
-            if (!UsersController.Exists(username, guid)) 
+            if (!Exists(username, guid)) 
                 return Unauthorized();
             Project toRemove = _context.projects.Where(x => x.ID == id).First();
             _context.projects.Remove(toRemove);
             _context.SaveChanges();
             return Ok();
+        }
+        [NonAction]
+        public bool Exists(string username, string id)
+        {
+            if (_context.users.Where(u => u.Username == username &&
+            u.Id.ToString() == id &&
+            DateTime.Compare(DateTime.Now, u.Logindate.AddHours(1)) <= 0)
+                .Count() >= 1)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

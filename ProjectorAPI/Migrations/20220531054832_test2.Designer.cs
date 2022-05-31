@@ -10,7 +10,7 @@ using ProjectorAPI.Data;
 namespace ProjectorAPI.Migrations
 {
     [DbContext(typeof(ProjectorContext))]
-    [Migration("20220531054658_test2")]
+    [Migration("20220531054832_test2")]
     partial class test2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
