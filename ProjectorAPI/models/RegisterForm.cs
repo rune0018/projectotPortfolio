@@ -1,5 +1,5 @@
 ﻿namespace ProjectorAPI.models
-{
+{ 
     public class RegisterForm
     {
         public string username { get; set; }

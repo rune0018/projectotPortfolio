@@ -13,7 +13,7 @@ namespace ProjectorAPI.Controllers
     public class UsersController : ControllerBase
     {
         private static List<User> MyUsers = new List<User>() {
-            new User(){ Username = "admin",Password = "localAdmin",Role = "admin"},
+            new User(){ Username = "admin",Password = Encrypt.sha512("Admin"),Role = "admin"},
             new User(){ Username = "rune001",Password = "lol",Role = "security"}
         };
 
@@ -27,21 +27,21 @@ namespace ProjectorAPI.Controllers
         {
             if (!_context.users.Any())
             {
-                _context.users.Add(new models.User { Username = "admin", Password = "localAdmin", Role = "admin" });
+                _context.users.Add(new models.User { Username = "admin", Password = Encrypt.sha512("localAdmin"), Role = "admin" });
                 _context.SaveChanges();
             }
             try
             {
-                var user = _context.users.Single(user => user.Username == login.Username && user.Password == login.Password);
+                var user = _context.users.Single(user => user.Username == login.Username && user.Password == Encrypt.sha512(login.Password));
                 user.Logindate = DateTime.Now;
                 _context.users.Update(user);
                 _context.SaveChanges();
+                return Ok(user);
             }
             catch (Exception)
             {
                 return BadRequest();
             }
-            return Ok(_context.users.Where(user => user.Username == login.Username && user.Password == login.Password));
         }
         [NonAction]
         public bool Exists(string username, string id)
@@ -61,7 +61,7 @@ namespace ProjectorAPI.Controllers
         {
             if(Exists("admin", registerForm.id))
             {
-                User toAdd = new models.User { Username = registerForm.username, Password = registerForm.password };
+                User toAdd = new models.User { Username = registerForm.username, Password = Encrypt.sha512(registerForm.password) };
                 _context.users.Add(toAdd);
                 _context.SaveChanges();
                 return Created($"/api/Users/{toAdd.Id}",toAdd);

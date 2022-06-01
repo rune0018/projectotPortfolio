@@ -26,22 +26,24 @@ namespace Testapp.Models
         private async Task<User> GetUserAPI(string username,string password)
         {
             HttpClient client = new HttpClient();
-            User[] user = new User[1];
+            User user = new User();
             try
             {
                 HttpResponseMessage response = await client.GetAsync($"https://localhost:44305/api/Users?Username={username}&Password={password}");
                 if (response.IsSuccessStatusCode)
                 {
-                    user = await response.Content.ReadFromJsonAsync<User[]>();
+                    user = await response.Content.ReadFromJsonAsync<User>();
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
-                user[0] = Repo.SingleOrDefault(u => u.Username == username && u.Password == password);
+                user = Repo.SingleOrDefault(u => u.Username == username && u.Password == password);
+                Console.WriteLine("Local User Login");
             }
-            return user[0];
+            client.Dispose();
+            return user;
         }
     }
 }

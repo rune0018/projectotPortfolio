@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ProjectorAPI.models;
 
 namespace ProjectorAPI
 {
@@ -18,7 +19,8 @@ namespace ProjectorAPI
             var host = CreateHostBuilder(args).Build();
 
             CreateDbIfNotExists(host);
-
+            string test = Encrypt.sha512("localAdmin");
+            
             host.Run();
         }
 
