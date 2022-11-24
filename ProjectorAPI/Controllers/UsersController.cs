@@ -61,7 +61,7 @@ namespace ProjectorAPI.Controllers
         {
             if(Exists("admin", registerForm.id))
             {
-                User toAdd = new models.User { Username = registerForm.username, Password = Encrypt.sha512(registerForm.password) };
+                User toAdd = new User { Username = registerForm.username, Password = Encrypt.sha512(registerForm.password) };
                 _context.users.Add(toAdd);
                 _context.SaveChanges();
                 return Created($"/api/Users/{toAdd.Id}",toAdd);

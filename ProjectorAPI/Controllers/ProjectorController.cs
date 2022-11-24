@@ -89,9 +89,9 @@ namespace ProjectorAPI.Controllers
         public bool Exists(string username, string id)
         {
             if (_context.users.Where(u => u.Username == username &&
-            u.Id.ToString() == id &&
-            DateTime.Compare(DateTime.Now, u.Logindate.AddHours(1)) <= 0)
-                .Count() >= 1)
+                u.Id.ToString() == id &&
+                DateTime.Compare(DateTime.Now, u.Logindate.AddHours(1)) <= 0)
+                    .Count() >= 1)
             {
                 return true;
             }

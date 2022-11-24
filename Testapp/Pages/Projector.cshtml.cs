@@ -17,6 +17,8 @@ namespace Testapp.Pages
     {
         public List<Project> Projects = new();
 
+        
+
         [BindProperty]
         public string Title { get; set; }
         [BindProperty]

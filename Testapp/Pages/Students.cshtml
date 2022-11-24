@@ -1,0 +1,42 @@
+﻿@page
+@model Testapp.Pages.StudentsModel
+@{
+}
+<h1>
+    Students
+</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>  Firstname</th>
+        <th>  Lastname</th>
+        <th>  EnrollmentDate</th>
+    </tr>
+    @foreach(var student in Model.Students){
+    <tr>
+        <td>
+            @student.ID 
+        </td>
+        <td>
+            @student.Firstname
+        </td>
+        <td>
+            @student.Lastname
+        </td>
+        <td>
+            @student.EnrollmentDate
+        </td>
+        <td>
+            <form method="post">
+                    <input type="submit" asp-route-id="@student.ID" asp-page-handler="Delete"/>
+            </form>
+        </td>
+    </tr>
+}
+</table>
+<form method="post">
+    <input asp-for="student.Firstname" />
+    <input asp-for="student.Lastname" />
+    <input asp-for="student.EnrollmentDate" />
+    <input type="submit" asp-page-handler="Add" />
+</form>

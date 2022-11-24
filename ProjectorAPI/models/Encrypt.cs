@@ -7,6 +7,7 @@ namespace ProjectorAPI.models
     {
         public static string sha512(string toEncrypt)
         {
+            
             string Finalresult = "";
             char[] chars = toEncrypt.ToCharArray();
             byte[] bytes = new byte[chars.Length + 10];//salt
